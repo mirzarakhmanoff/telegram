@@ -8,7 +8,7 @@ interface Props {
 const ContactList: FC<Props> = ({ contacts }) => {
   return (
     <>
-      <div className="flex items-center  bg-background pl-2 sticky top-0"></div>
+      <div className="flex items-center justify-center  bg-background pl-2 sticky top-0"></div>
     </>
   );
 };
