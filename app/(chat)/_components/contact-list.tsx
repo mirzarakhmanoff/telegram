@@ -6,8 +6,8 @@ import Settings from "./settings";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-import useCurrentContact from "@/hooks/use-current";
 import { cn } from "@/lib/utils";
+import { useCurrentContact } from "@/hooks/use-current";
 
 interface Props {
   contacts: IUser[];
@@ -15,13 +15,13 @@ interface Props {
 
 const ContactList: FC<Props> = ({ contacts }) => {
   const router = useRouter();
-  const [currentContact, setCurrentContact] = useCurrentContact();
+  const { currentContact, setCurrentContact } = useCurrentContact();
 
   const renderContact = (contact: IUser) => {
     const onChat = () => {
-      if (currentContact?._id === contact?._id) return; // Не обновляем, если контакт уже выбран.
-      setCurrentContact(contact); // Устанавливаем текущий контакт.
-      router.push(`/?chat=${contact._id}`); // Переходим на чат.
+      if (currentContact?._id === contact?._id) return;
+      setCurrentContact(contact);
+      router.push(`/?chat=${contact._id}`);
     };
 
     return (
