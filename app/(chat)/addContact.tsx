@@ -25,7 +25,7 @@ const AddContact: FC<Props> = ({ contactForm, onCreateContact }) => {
       <div className="flex justify-center items-center z-50 w-full">
         <div className="flex flex-col items-center gap-4">
           <FaTelegram size={120} className="dark:text-blue-400 text-blue-500" />
-          <h1 className="text-3xl font-bold">Add contact to start chatting</h1>
+          <h1 className="text-3xl font-bold">Add contact to start messaging</h1>
           <Form {...contactForm}>
             <form
               onSubmit={contactForm.handleSubmit(onCreateContact)}
