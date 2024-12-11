@@ -22,7 +22,7 @@ function HomePage() {
       lastName: "Doe",
       bio: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis repellat blanditiis hic reiciendis quibusdam voluptatem necessitatibus, minus sint maxime iste impedit cupiditate ab provident doloremque sed dicta, molestias nemo cum.",
     },
-    { email: "amile@gmail.com", _id: "2" },
+    { email: "amile@gmail.com", _id: "2", firstName: "Amile" },
     { email: "faris@gmail.com", _id: "3" },
     { email: "abdo@gmail.com", _id: "4" },
     { email: "billi@gmail.com", _id: "5" },

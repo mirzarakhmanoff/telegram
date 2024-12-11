@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -11,6 +10,7 @@ import { useCurrentContact } from "@/hooks/use-current";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Separator } from "@radix-ui/react-separator";
 import { Settings2 } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 function TopChat() {
@@ -81,6 +81,48 @@ function TopChat() {
             </Avatar>
           </div>
           <Separator className="my-2" />
+          <h1 className="text-center capitalize font-spaceGrotesk text-xl">
+            {currentContact?.email}
+          </h1>
+
+          {currentContact?.firstName && (
+            <div className="flex items-center gap-1 mt-4">
+              <p className="font-spaceGrotesk">First Name: </p>
+              <p className="font-spaceGrotesk text-muted-foreground">
+                {currentContact?.firstName}
+              </p>
+            </div>
+          )}
+          {currentContact?.lastName && (
+            <div className="flex items-center gap-1 mt-4">
+              <p className="font-spaceGrotesk">Last Name: </p>
+              <p className="font-spaceGrotesk text-muted-foreground">
+                {currentContact?.lastName}
+              </p>
+            </div>
+          )}
+          {currentContact?.bio && (
+            <div className="flex items-center gap-1 mt-4">
+              <p className="font-spaceGrotesk">
+                About:{" "}
+                <span className="font-spaceGrotesk text-muted-foreground">
+                  {currentContact?.bio}
+                </span>
+              </p>
+            </div>
+          )}
+          <Separator className="my-2" />
+          <h2 className="text-xl ">Image</h2>
+          <div className="flex flex-col space-y-2">
+            <div className="w-full relative  h-36">
+              <Image
+                src={"https://github.com/shadcn.png"}
+                alt="alt"
+                fill
+                className="object-cover rounded-md"
+              />
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </div>
