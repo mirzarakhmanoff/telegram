@@ -6,18 +6,26 @@ import { useRouter } from "next/navigation";
 import AddContact from "./addContact";
 import { useCurrentContact } from "@/hooks/use-current";
 import { useForm } from "react-hook-form";
-import { emailSchema } from "@/lib/validation";
+import { emailSchema, messageSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import TopChat from "./_components/top-chat";
+import Chat from "./_components/chat";
 
 function HomePage() {
   const contacts = [
-    { email: "john@gmail.com", _id: "1" },
-    { email: "selena@gmail.com", _id: "2" },
-    { email: "azamat@gmail.com", _id: "3" },
-    { email: "samandar@gmail.com", _id: "4" },
-    { email: "sarvar@gmail.com", _id: "5" },
-    { email: "ulugbek@gmail.com", _id: "6" },
+    {
+      email: "john@gmail.com",
+      _id: "1",
+      avatar: "https://github.com/shadcn.png",
+      firstName: "John",
+      lastName: "Doe",
+      bio: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis repellat blanditiis hic reiciendis quibusdam voluptatem necessitatibus, minus sint maxime iste impedit cupiditate ab provident doloremque sed dicta, molestias nemo cum.",
+    },
+    { email: "amile@gmail.com", _id: "2" },
+    { email: "faris@gmail.com", _id: "3" },
+    { email: "abdo@gmail.com", _id: "4" },
+    { email: "billi@gmail.com", _id: "5" },
   ];
 
   const { currentContact } = useCurrentContact();
@@ -29,6 +37,17 @@ function HomePage() {
       email: "",
     },
   });
+  const messagForm = useForm<z.infer<typeof messageSchema>>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: {
+      text: "",
+      image: "",
+    },
+  });
+
+  const onSendMessage = (value: z.infer<typeof messageSchema>) => {
+    console.log(value);
+  };
 
   const onCreateContact = (values: z.infer<typeof emailSchema>) => {
     //Api call
@@ -59,7 +78,14 @@ function HomePage() {
           />
         )}
         {/* chat */}
-        {currentContact?._id && <div>hello</div>}
+        {currentContact?._id && (
+          <div className="w-full relative">
+            {/* {Top chat } */}
+            <TopChat />
+            {/* {Chat messages} */}
+            <Chat messageForm={messagForm} onSendMessage={onSendMessage} />
+          </div>
+        )}
       </div>
     </div>
   );
