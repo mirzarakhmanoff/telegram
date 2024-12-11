@@ -59,7 +59,7 @@ function TopChat() {
       <Sheet>
         <SheetTrigger>
           {" "}
-          <Button size={"icon"} variant={"secondary"}>
+          <Button size={"icon"} variant={"secondary"} asChild>
             <Settings2 />
           </Button>
         </SheetTrigger>
