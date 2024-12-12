@@ -20,3 +20,9 @@ export const messageSchema = z.object({
   text: z.string().min(1, { message: "Message can't be empty" }),
   image: z.string().optional(),
 });
+
+export const profileSchema = z.object({
+  firstName: z.string().min(2),
+  lastName: z.string().optional(),
+  bio: z.string().optional(),
+});
