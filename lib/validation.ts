@@ -36,3 +36,12 @@ export const profileSchema = z.object({
 // export const otpSchema = z.object({
 
 // }).merge(emailSchema)
+
+export const confirmTextSchema = z
+  .object({
+    confirmText: z.string(),
+  })
+  .refine((data) => data.confirmText === "DELETE", {
+    message: "You must type DELETE to confirm",
+    path: ["confirmText"],
+  });

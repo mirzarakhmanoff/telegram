@@ -44,7 +44,7 @@ function Settings() {
   return (
     <>
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button variant={"secondary"}>
             <Menu />
           </Button>
