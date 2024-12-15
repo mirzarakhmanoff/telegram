@@ -134,19 +134,19 @@ function Settings() {
                 <InformationForm />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-1">
+            <AccordionItem value="item-2">
               <AccordionTrigger>Email</AccordionTrigger>
               <AccordionContent className="px-2 mt-2">
                 <EmailForm />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-1">
+            <AccordionItem value="item-3">
               <AccordionTrigger>Notification</AccordionTrigger>
               <AccordionContent className="px-2 mt-2">
                 <NotificationForm />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-1">
+            <AccordionItem value="item-4">
               <AccordionTrigger>Danger zone</AccordionTrigger>
               <AccordionContent className="px-2 mt-2">
                 <DangerZoneForm />

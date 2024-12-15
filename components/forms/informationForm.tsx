@@ -22,7 +22,6 @@ const InformationForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof profileSchema>) => {
-    // Handle form submission
     console.log(data);
   };
 

@@ -8,6 +8,12 @@ export const emailSchema = z.object({
     .email({ message: "Invalid email address, please check and try again." }),
 });
 
+export const oldEmailSchema = z
+  .object({
+    oldEmail: z.string().email({ message: "Invalid email a ddres" }),
+  })
+  .merge(emailSchema);
+
 export const otpSchema = z
   .object({
     otp: z.string().min(6, {
@@ -26,3 +32,7 @@ export const profileSchema = z.object({
   lastName: z.string().optional(),
   bio: z.string().optional(),
 });
+
+// export const otpSchema = z.object({
+
+// }).merge(emailSchema)
