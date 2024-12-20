@@ -6,3 +6,11 @@ export interface IUser {
   lastName?: string;
   bio?: string;
 }
+
+export interface ChildProps {
+  children: React.ReactNode;
+}
+
+export interface IError {
+  response: { data: { message: string } };
+}
