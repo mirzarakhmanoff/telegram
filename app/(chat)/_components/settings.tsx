@@ -35,12 +35,14 @@ import {
   UserPlus,
   VolumeOff,
 } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import React, { useState } from "react";
 
 function Settings() {
   const { resolvedTheme, setTheme } = useTheme();
   const [sheet, setSheet] = useState(false);
+  const { data: session } = useSession();
   return (
     <>
       <Popover>
@@ -52,7 +54,7 @@ function Settings() {
         <PopoverContent className="p-0 w-80">
           <h2 className="font-spaceGrotesk pt-2 pl-2 text-muted-foreground ">
             Settings:{" "}
-            <span className="text-white">mirzarakhmanoff@gmail.com</span>
+            <span className="text-white">{session?.currentUser?.email}</span>
           </h2>
           <Separator className="my-2" />
           <div className="flex flex-col ">
@@ -96,7 +98,10 @@ function Settings() {
                 }
               />
             </div>
-            <div className="flex justify-between items-center p-2 hover:bg-red-600 cursor-pointer  bg-red-700">
+            <div
+              className="flex justify-between items-center p-2 hover:bg-red-600 cursor-pointer  bg-red-700"
+              onClick={() => signOut()}
+            >
               <div className="flex items-center gap-1">
                 <LogIn size={16} />
                 <span className="text-sm "> Log out</span>
