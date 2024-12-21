@@ -20,13 +20,20 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "../ui/input-otp";
+import { useMutation } from "@tanstack/react-query";
+import { generateToken } from "@/lib/generate.token";
+import { signOut, useSession } from "next-auth/react";
+import { axiosClient } from "@/http/axios";
+import { toast } from "@/hooks/use-toast";
+import { IError } from "@/types";
 
 const EmailForm = () => {
   const [verify, setVerify] = useState(false);
+  const { data: session } = useSession();
 
   const emailForm = useForm<z.infer<typeof oldEmailSchema>>({
     resolver: zodResolver(oldEmailSchema),
-    defaultValues: { email: "", oldEmail: "info@sammi.ac" },
+    defaultValues: { email: "", oldEmail: session?.currentUser?.email },
   });
 
   const otpForm = useForm<z.infer<typeof otpSchema>>({
@@ -34,14 +41,69 @@ const EmailForm = () => {
     defaultValues: { otp: "", email: "" },
   });
 
+  const otpMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const token = await generateToken(session?.currentUser?._id);
+      const { data } = await axiosClient.post<{ email: string }>(
+        "/api/user/send-otp",
+        { email },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return data;
+    },
+    onSuccess({ email }) {
+      toast({ description: "OTP sended to your email" });
+      otpForm.setValue("email", email);
+      setVerify(true);
+    },
+    onError: (error: IError) => {
+      if (error.response?.data?.message) {
+        return toast({
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      }
+      return toast({
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    },
+  });
+
   function onEmailSubmit(values: z.infer<typeof oldEmailSchema>) {
-    console.log(values);
-    otpForm.setValue("email", values.email);
-    setVerify(true);
+    otpMutation.mutate(values.email);
   }
 
+  const verifyMutation = useMutation({
+    mutationFn: async (otp: string) => {
+      const token = await generateToken(session?.currentUser?._id);
+      const { data } = await axiosClient.put(
+        "/api/user/email",
+        { email: otpForm.getValues("email"), otp },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return data;
+    },
+    onSuccess({ email }) {
+      toast({ description: "Email updated succesfully" });
+      signOut();
+    },
+    onError: (error: IError) => {
+      if (error.response?.data?.message) {
+        return toast({
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      }
+      return toast({
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    },
+  });
+
   function onVerifySubmit(values: z.infer<typeof otpSchema>) {
-    console.log(values);
+    verifyMutation.mutate(values.otp);
   }
 
   return !verify ? (
@@ -71,6 +133,7 @@ const EmailForm = () => {
               <Label>Enter a new email</Label>
               <FormControl>
                 <Input
+                  disabled={otpMutation.isPending}
                   placeholder="info@sammi.ac"
                   className="h-10 bg-secondary"
                   {...field}
@@ -80,7 +143,11 @@ const EmailForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button
+          disabled={otpMutation.isPending}
+          type="submit"
+          className="w-full"
+        >
           Verify email
         </Button>
       </form>
@@ -105,6 +172,7 @@ const EmailForm = () => {
               <Label>One-Time Password</Label>
               <FormControl>
                 <InputOTP
+                  disabled={verifyMutation.isPending}
                   maxLength={6}
                   className="w-full"
                   pattern={REGEXP_ONLY_DIGITS}
@@ -145,7 +213,11 @@ const EmailForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button
+          disabled={verifyMutation.isPending}
+          type="submit"
+          className="w-full"
+        >
           Submit
         </Button>
       </form>
