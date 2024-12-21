@@ -25,7 +25,6 @@ import { generateToken } from "@/lib/generate.token";
 import { signOut, useSession } from "next-auth/react";
 import { axiosClient } from "@/http/axios";
 import { toast } from "@/hooks/use-toast";
-import { IError } from "@/types";
 
 const EmailForm = () => {
   const [verify, setVerify] = useState(false);
@@ -56,18 +55,6 @@ const EmailForm = () => {
       otpForm.setValue("email", email);
       setVerify(true);
     },
-    onError: (error: IError) => {
-      if (error.response?.data?.message) {
-        return toast({
-          description: error.response.data.message,
-          variant: "destructive",
-        });
-      }
-      return toast({
-        description: "Something went wrong",
-        variant: "destructive",
-      });
-    },
   });
 
   function onEmailSubmit(values: z.infer<typeof oldEmailSchema>) {
@@ -87,18 +74,6 @@ const EmailForm = () => {
     onSuccess({ email }) {
       toast({ description: "Email updated succesfully" });
       signOut();
-    },
-    onError: (error: IError) => {
-      if (error.response?.data?.message) {
-        return toast({
-          description: error.response.data.message,
-          variant: "destructive",
-        });
-      }
-      return toast({
-        description: "Something went wrong",
-        variant: "destructive",
-      });
     },
   });
 
