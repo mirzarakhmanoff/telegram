@@ -62,7 +62,7 @@ const HomePage = () => {
 
   useEffect(() => {
     router.replace("/");
-    socket.current = io("ws://localhost:5000");
+    socket.current = io("ws://localhost:5001");
   }, []);
 
   useEffect(() => {
